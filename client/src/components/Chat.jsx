@@ -1,9 +1,29 @@
 import { useState } from 'react';
 import './Chat.css'
 
+import ChatCard from './ChatCard';
+
 function Chat() {
 
     const [hidden, setHidden] = useState(true)
+
+
+    const messages = [
+        {
+            user: 'karim',
+            message : 'hi',
+        },
+
+        {
+            user: 'pandau',
+            message: 'hi, how are you ?',
+        },
+
+        {
+            user: 'karim',
+            message: "i'm fine thx"
+        },
+    ]
 
 
     return ( 
@@ -14,6 +34,9 @@ function Chat() {
             { !hidden ?
                 <div className='Chat'>
                     <div className='container'>
+                        {
+                            messages.map((message, index) => <ChatCard key={index}  message={message}/>)
+                        }
                         
                     </div>
                     <div className='input'>
