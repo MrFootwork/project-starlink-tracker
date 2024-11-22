@@ -9,12 +9,15 @@ import StarlinksMapLayer from "../components/StarlinksMapLayer";
 import getStarlinksNewPositions from "../helpers/getNewStarlinksPositions";
 import Chat from "../components/Chat";
 
+
 function MapPage() {
     const [starlinks, setStarlinks] = useState(null);
     const [dataFetched, setDataFetched] = useState(false);
 
+    const API = import.meta.env.VITE_STARLINK_API || 'https://api.spacexdata.com/v4/starlink'
+
   async function getFlyingStarlinks() {
-    const {data} = await axios.get('https://api.spacexdata.com/v4/starlink')
+    const {data} = await axios.get(`${API}`)
     const activeStarlinks = data.filter(starlink => starlink.spaceTrack.DECAYED !== 1);
     // console.log(activeStarlinks);
     setStarlinks(activeStarlinks);
