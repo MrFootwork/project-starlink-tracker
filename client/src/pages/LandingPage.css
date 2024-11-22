@@ -1,0 +1,32 @@
+.LandingPage {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(23, 23, 23);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 50px;
+    align-items: center;
+}
+
+.LandingPage p {
+    width: 800px;
+    max-width: 95%;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.LandingPage button {
+    border: none;
+    background-color: inherit;
+    color: inherit;
+    width: 300px;
+    height: 50px;
+    border: white 1px solid;
+    border-radius: 3px;
+    font-size: 1.25rem;
+}
