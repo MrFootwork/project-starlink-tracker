@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.7.7",
+    "maplibre-gl": "^4.7.1",
+    "maplibre-react-components": "^0.1.9",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
