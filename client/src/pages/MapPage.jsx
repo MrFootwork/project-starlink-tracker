@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useState } from 'react';
 
 import StarlinksMapLayer from "../components/StarlinksMapLayer";
-
 import getStarlinksNewPositions from "../helpers/getNewStarlinksPositions";
 
 function MapPage() {
@@ -34,11 +33,11 @@ function MapPage() {
 
   return (
    <RMap
-   mapStyle='https://tiles.openfreemap.org/styles/positron'
-   minZoom={2}
+   mapStyle='/dark_custom.json'
+   minZoom={1}
    >
     <RNavigationControl position="top-right" visualizePitch={true} />
-    <StarlinksMapLayer starlinks={starlinks}/>
+    {/* <StarlinksMapLayer starlinks={starlinks}/> */}
    </RMap>
   )
 }
