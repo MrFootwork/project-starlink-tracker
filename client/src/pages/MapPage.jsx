@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 import StarlinksMapLayer from "../components/StarlinksMapLayer";
 import getStarlinksNewPositions from "../helpers/getNewStarlinksPositions";
+import Chat from "../components/Chat";
 
 function MapPage() {
     const [starlinks, setStarlinks] = useState(null);
@@ -34,10 +35,11 @@ function MapPage() {
   return (
    <RMap
    mapStyle='/dark_custom.json'
-   minZoom={1}
+   minZoom={2}
    >
     <RNavigationControl position="top-right" visualizePitch={true} />
-    {/* <StarlinksMapLayer starlinks={starlinks}/> */}
+    <StarlinksMapLayer starlinks={starlinks}/>
+    <Chat/>
    </RMap>
   )
 }
