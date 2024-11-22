@@ -14,35 +14,7 @@ function Chat() {
             { !hidden ?
                 <div className='Chat'>
                     <div className='container'>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
-                        <div>Chat</div>
+                        
                     </div>
                     <div className='input'>
                         <input type="text" name="message" id="message" placeholder='Chat with others !'/>
