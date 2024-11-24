@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/fiber": "^8.17.10",
     "axios": "^1.7.7",
+    "mapbox-gl": "^3.8.0",
     "maplibre-gl": "^4.7.1",
-    "maplibre-react-components": "^0.1.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.0.0"
+    "react-map-gl": "^7.1.7",
+    "react-router-dom": "^7.0.0",
+    "react-three-map": "^0.8.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

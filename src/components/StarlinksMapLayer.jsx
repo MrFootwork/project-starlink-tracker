@@ -1,4 +1,4 @@
-import {RSource, RLayer } from 'maplibre-react-components';
+import {Source, Layer} from 'react-map-gl'
 
 
 function StarlinksMapLayer({starlinks}) {
@@ -27,18 +27,17 @@ function StarlinksMapLayer({starlinks}) {
         'circle-color': '#007cbf'
       }
 
+      const layerStyle = {
+        id: 'point',
+        type: 'circle',
+        paint: satellitesPaint,
+      }
+
     
     return ( 
-        <>
-            <RSource key='satellites' id='satellites' type='geojson' data={satellitesData}/>
-            <RLayer
-            key='satellites-layer'
-            id='satellites-layer'
-            source='satellites'
-            type='circle'
-            paint={satellitesPaint}
-            />
-        </>
+        <Source id='starlinks' type='geojson' data={satellitesData}>
+          <Layer {...layerStyle}/>
+        </Source>
      );
 }
 

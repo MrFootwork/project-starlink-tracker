@@ -1,20 +1,22 @@
-import "maplibre-gl/dist/maplibre-gl.css";
-import 'maplibre-react-components/style.css';
-import { RMap, RNavigationControl } from 'maplibre-react-components';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import Map, {NavigationControl} from 'react-map-gl/maplibre';
 import { useEffect } from 'react';
-import axios from 'axios';
 import { useState } from 'react';
+import { useRef } from "react";
+import axios from 'axios';
 
-import StarlinksMapLayer from "../components/StarlinksMapLayer";
+
 import getStarlinksNewPositions from "../helpers/getNewStarlinksPositions";
+import StarlinksMapLayer from '../components/StarlinksMapLayer';
+import StarlinksMapLayer3D from '../components/StarlinksMapLayer3D';
 import Chat from "../components/Chat";
 
 
 function MapPage() {
-    const [starlinks, setStarlinks] = useState(null);
-    const [dataFetched, setDataFetched] = useState(false);
+  const [starlinks, setStarlinks] = useState(null);
+  const [dataFetched, setDataFetched] = useState(false);
 
-    const API = import.meta.env.VITE_STARLINK_API || 'https://api.spacexdata.com/v4/starlink'
+  const API = import.meta.env.VITE_STARLINK_API || 'https://api.spacexdata.com/v4/starlink'
 
   async function getFlyingStarlinks() {
     const {data} = await axios.get(`${API}`)
@@ -22,6 +24,7 @@ function MapPage() {
     // console.log(activeStarlinks);
     setStarlinks(activeStarlinks);
     setDataFetched(true);
+    console.log(starlinks[0]);
   }
 
   useEffect(() => {
@@ -36,14 +39,23 @@ function MapPage() {
   }, [dataFetched])
 
   return (
-   <RMap
-   mapStyle='/dark_custom.json'
-   minZoom={2}
+   <Map
+   antialias
+   initialViewState={{
+    longitude: 0,
+    latitude: 0,
+    zoom: 2,
+  }}
+  mapStyle='/dark_custom.json'
    >
-    <RNavigationControl position="top-right" visualizePitch={true} />
-    <StarlinksMapLayer starlinks={starlinks}/>
+    <NavigationControl/>
+    {/* <StarlinksMapLayer starlinks={starlinks}/> */}
+    {
+      starlinks &&
+      <StarlinksMapLayer3D starlinks={starlinks}/>
+    }
     <Chat/>
-   </RMap>
+   </Map>
   )
 }
 

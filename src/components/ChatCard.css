@@ -9,6 +9,7 @@
     align-items: center;
     gap: 20px;
     background-color: white;
+    border-radius: 5px;
 }
 
 .ChatCard img {
