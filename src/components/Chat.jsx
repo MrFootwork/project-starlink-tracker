@@ -1,30 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Chat.css'
+
+import { io } from "socket.io-client";
+import axios from 'axios';
 
 import ChatCard from './ChatCard';
 
 function Chat() {
-
+    const [apiBaseURL, setApiBaseURL] = useState('')
+    const [socket, setSocket] = useState({})
     const [hidden, setHidden] = useState(true)
     const [messageInput, setMessageInput] = useState('')
+    const [messages, setMessages] = useState([])
 
 
-    const [messages, setMessages] = useState([
-        {
-            user: 'karim',
-            message : 'hi',
-        },
+    // Handling Chat
+    useEffect(() => {
+			if (import.meta.env.VITE_ENV === 'prod')
+				setApiBaseURL(import.meta.env.VITE_API_BASE_URL);
+			if (import.meta.env.VITE_ENV === 'dev')
+				setApiBaseURL('http://localhost:3000');
+		}, []);
 
-        {
-            user: 'pandau',
-            message: 'hi, how are you ?',
-        },
+    useEffect(() => {
+			setSocket(io(apiBaseURL));
 
-        {
-            user: 'karim',
-            message: "i'm fine thx"
-        },
-    ])
+			const getMessages = async () => {
+				const { data } = axios.get(`${apiBaseURL}/messages`);
+				console.log(`🚀 ~ useEffect ~ data:`, data);
+			};
+
+            getMessages()
+		}, [apiBaseURL]);
+
+      // Handle incoming messages
+    //   const messages = document.getElementById('messages');
+    //   socket.on('chatMessage', (message) => {
+    //     const li = document.createElement('li');
+    //     li.textContent = message;
+    //     messages.appendChild(li);
+    //     messages.scrollTop = messages.scrollHeight; // Auto-scroll to the newest message
+    //   });
+  
+      // Send messages
+    //   const form = document.getElementById('form');
+    //   const input = document.getElementById('input');
+    //   form.addEventListener('submit', (e) => {
+    //     e.preventDefault();
+    //     if (input.value) {
+    //       socket.emit('chatMessage', input.value); // Send the message to the server
+    //       input.value = ''; // Clear the input field
+    //     }
+    //   });
 
     function handleAddMessage(event){
         event.preventDefault();
@@ -33,7 +60,16 @@ function Chat() {
             message: messageInput,
         }])
         setMessageInput('');
+        socket.emit('chatMessage', messageInput);
     }
+    // function handleAddMessage(event){
+    //     event.preventDefault();
+    //     setMessages([...messages, {
+    //         user: 'karim',
+    //         message: messageInput,
+    //     }])
+    //     setMessageInput('');
+    // }
 
 
     return ( 

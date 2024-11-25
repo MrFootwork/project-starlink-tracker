@@ -24,7 +24,7 @@ function MapPage() {
     // console.log(activeStarlinks);
     setStarlinks(activeStarlinks);
     setDataFetched(true);
-    console.log(starlinks[0]);
+    // console.log(starlinks[0]);
   }
 
   useEffect(() => {
@@ -49,10 +49,10 @@ function MapPage() {
   mapStyle='/dark_custom.json'
    >
     <NavigationControl/>
-    {/* <StarlinksMapLayer starlinks={starlinks}/> */}
+    <StarlinksMapLayer starlinks={starlinks}/>
     {
-      starlinks &&
-      <StarlinksMapLayer3D starlinks={starlinks}/>
+      // starlinks &&
+      // <StarlinksMapLayer3D starlinks={starlinks}/>
     }
     <Chat/>
    </Map>
