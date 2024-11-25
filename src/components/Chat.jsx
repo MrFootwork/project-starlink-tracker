@@ -1,38 +1,57 @@
 import { useState } from 'react';
+import axios from 'axios';
+import {io} from 'socket.io-client'
 import './Chat.css'
 
+import { UserContext } from '../contexts/UserWrapper';
+
 import ChatCard from './ChatCard';
+import { useContext } from 'react';
+import { useEffect } from 'react';
+
+const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Chat() {
 
+    const {user} = useContext(UserContext);
     const [hidden, setHidden] = useState(true)
     const [messageInput, setMessageInput] = useState('')
+    const [messages, setMessages] = useState([])
+    const [socket, setSocket] = useState(null);
 
+    if(!socket){
+        setSocket(io(WEBSOCKET_URL));
+        
+    }
 
-    const [messages, setMessages] = useState([
-        {
-            user: 'karim',
-            message : 'hi',
-        },
+    async function getMessages() {
+        try {
+            const {data} = await axios.get(BASE_URL+'/messages');
+            setMessages(data);
+            console.log(data);
+        } catch (e){
+            console.log('ERROR: ', e)
+        }
+    }
 
-        {
-            user: 'pandau',
-            message: 'hi, how are you ?',
-        },
+    useEffect(() => {
+        getMessages();
+        socket.io.on('chatMessage', onReceive)
+    }, [socket])
 
-        {
-            user: 'karim',
-            message: "i'm fine thx"
-        },
-    ])
-
-    function handleAddMessage(event){
+    async function handleAddMessage(event){
         event.preventDefault();
-        setMessages([...messages, {
-            user: 'karim',
-            message: messageInput,
-        }])
+        
         setMessageInput('');
+        // await axios.get('http://localhost:3000/health', {withCredentials: true});
+        // console.log(socket);
+        socket.io.emit('chatMessage', messageInput);
+    }
+
+
+    async function onReceive(message) {
+        setMessages([...messages, message]);
     }
 
 

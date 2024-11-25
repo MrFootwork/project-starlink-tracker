@@ -35,9 +35,14 @@ function StarlinksMapLayer({starlinks}) {
 
     
     return ( 
+      <>
+      {
+        starlinks &&
         <Source id='starlinks' type='geojson' data={satellitesData}>
           <Layer {...layerStyle}/>
         </Source>
+      }
+        </>
      );
 }
 

@@ -1,15 +1,44 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './LogInPage.css'
+import axios from 'axios';
+
+import { UserContext } from '../contexts/UserWrapper';
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function LogInPage() {
+    const navigate= useNavigate();
+
+    const {user, setUser} = useContext(UserContext);
+
+    if(user){
+        navigate('/sky');
+    }
 
     const [authForm, setAuthForm] = useState('login');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
 
-    function submitHandler(e){
+    async function submitHandler(e){
         e.preventDefault();
+        try {
+
+            if(authForm === 'login'){
+                const {data} = await axios.post(BASE_URL+'/login', {username: username, password: password});
+                if(data){
+                    setUser(data);
+                }
+                return;
+            }
+            const {data} = await axios.post(BASE_URL+'/signin', {username: username, password: password, password2: password2});
+            if(data){
+                setUser(data);
+            }
+        } catch (e){
+            console.log('ERROR: ', e);
+        }
     }
 
 
