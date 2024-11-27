@@ -14,13 +14,13 @@ function latLonTo3D(lat, lon, radius){
 }
 
 
-function Starlink3D({starlink}) {
+function Starlink3D({starlink, setHoveredStarlink}) {
 
-    const [x, y, z] = latLonTo3D(starlink.latitude, starlink.longitude, 1)
+    const [x, y, z] = latLonTo3D(starlink.latitude, starlink.longitude, 3)
 
     return ( 
-        <mesh position={[x*1.05, y, z*1.05]}>
-            <boxGeometry args={[0.01, 0.01, 0.01]}/>
+        <mesh position={[x*1.05, y, z*1.05]} onPointerEnter={async () => setHoveredStarlink(starlink)} onPointerLeave={() => setHoveredStarlink(null)}>
+            <boxGeometry args={[0.015, 0.015, 0.015]}/>
             <meshPhongMaterial color='#007cbf'/>
         </mesh>
      );

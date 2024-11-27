@@ -7,7 +7,7 @@ export default function updateSatellitePosition(satellite, deltaTime) {
     const time = Date.now();
     const gsTime = gstime(time)
     // console.log(time, gsTime);
-    const positionAndVelocity = sgp4(satellite.satrec, 60*60*100);
+    const positionAndVelocity = sgp4(satellite.satrec, 2);
     const ecefCoords = eciToEcf(positionAndVelocity.position, gsTime);
     const geodeticCoords = eciToGeodetic(positionAndVelocity.position, gsTime);
 

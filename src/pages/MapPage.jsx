@@ -65,7 +65,7 @@ function MapPage() {
     const updateTimeout = setInterval(() => {
       if(!dataFetched) return
       // const newStarlinks = getStarlinksNewPositions(starlinks);
-      // setStarlinks(newStarlinks); // Disable starlink motion, waiting to fiw it
+      // setStarlinks(newStarlinks); // Disable starlink motion, waiting to fix it
     },1000)
     if(geoControlRef.current) geoControlRef.current.trigger();
     console.log(geoControlRef.current)
