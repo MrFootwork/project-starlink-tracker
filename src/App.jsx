@@ -9,6 +9,8 @@ import LandingPage from './pages/LandingPage'
 import LogInPage from './pages/LogInPage'
 import axios from 'axios'
 
+axios.defaults.withCredentials = true;
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
@@ -20,13 +22,13 @@ function App() {
     try {
       const {data} = await axios.get(BASE_URL+'/getUser');
       if(data){
-        setUser(data);
+        setUser(data.resUser);
       } else {
         navigate('/');
       }
     } catch (e) {
       console.log('ERROR: ', e);
-      // navigate('/')
+      navigate('/')
     }
   }
 

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRef, useCallback } from "react";
 import axios from 'axios';
+import { twoline2satrec} from 'satellite.js';
 
 
 import getStarlinksNewPositions from "../helpers/getNewStarlinksPositions";
@@ -12,14 +13,15 @@ import StarlinksMapLayer3D from '../components/StarlinksMapLayer3D';
 import Chat from "../components/Chat";
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-
+axios.defaults.withCredentials = true;
 
 
 
 function MapPage() {
   const [starlinks, setStarlinks] = useState(null);
   const [dataFetched, setDataFetched] = useState(false);
-  const [coordinates, setCoordinates] = useState()
+  const [coordinates, setCoordinates] = useState();
+  const [scene3D, setScene3D] = useState(false);
   const mapRef = useRef();
   const geoControlRef = useRef();
 
@@ -27,8 +29,11 @@ function MapPage() {
 
   async function getFlyingStarlinks() {
     const {data} = await axios.get(`${API}`)
-    const activeStarlinks = data.filter(starlink => starlink.spaceTrack.DECAYED !== 1);
-    // console.log(activeStarlinks);
+    const activeStarlinks = data.filter(starlink => starlink.spaceTrack.DECAYED === 0).map(starlink => {
+      starlink.satrec = twoline2satrec(starlink.spaceTrack.TLE_LINE1, starlink.spaceTrack.TLE_LINE2);
+      return starlink;
+    });
+    console.log(activeStarlinks);
     setStarlinks(activeStarlinks);
     setDataFetched(true);
   }
@@ -57,9 +62,9 @@ function MapPage() {
     setCurrentCoordinates();
     const updateTimeout = setInterval(() => {
       if(!dataFetched) return
-      const newStarlinks = getStarlinksNewPositions(starlinks);
-      setStarlinks(newStarlinks);
-    },100)
+      // const newStarlinks = getStarlinksNewPositions(starlinks);
+      // setStarlinks(newStarlinks); // Disable starlink motion, waiting to fiw it
+    },1000)
     if(geoControlRef.current) geoControlRef.current.trigger();
     console.log(geoControlRef.current)
     return () => clearInterval(updateTimeout);
@@ -68,7 +73,9 @@ function MapPage() {
 
   return (
     <>
-    {
+    <Chat/>
+    { scene3D ? ""
+    :
       <Map
       antialias
       initialViewState={{
@@ -86,7 +93,7 @@ function MapPage() {
           // starlinks &&
           // <StarlinksMapLayer3D starlinks={starlinks}/>
         }
-        <Chat/>
+        
       </Map>
     }
     </>

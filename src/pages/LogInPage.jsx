@@ -6,6 +6,7 @@ import axios from 'axios';
 import { UserContext } from '../contexts/UserWrapper';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+axios.defaults.withCredentials = true;
 
 function LogInPage() {
     const navigate= useNavigate();
@@ -28,7 +29,8 @@ function LogInPage() {
             if(authForm === 'login'){
                 const {data} = await axios.post(BASE_URL+'/login', {username: username, password: password});
                 if(data){
-                    setUser(data);
+                    setUser(data.resUser);
+                    console.log(data);
                 }
                 return;
             }

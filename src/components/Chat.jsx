@@ -27,9 +27,9 @@ function Chat() {
 
     async function getMessages() {
         try {
-            const {data} = await axios.get(BASE_URL+'/messages');
+            const {data} = await axios.get(BASE_URL+'/messages', {withCredentials: true});
             setMessages(data);
-            console.log(data);
+            // console.log(data);
         } catch (e){
             console.log('ERROR: ', e)
         }
@@ -37,21 +37,43 @@ function Chat() {
 
     useEffect(() => {
         getMessages();
-        socket.io.on('chatMessage', onReceive)
+        socket.io.on('chatMessage', (message) => {
+            onReceive(message);
+        })
     }, [socket])
 
-    async function handleAddMessage(event){
+    function handleAddMessage(event){
         event.preventDefault();
         
-        setMessageInput('');
         // await axios.get('http://localhost:3000/health', {withCredentials: true});
         // console.log(socket);
-        socket.io.emit('chatMessage', messageInput);
+        // console.log(user);
+
+        // Updating the state on the io receiving funtion doesn't seems to work, maybe try to receive the whole messages list from the server
+        socket.io.emit('chatMessage', [...messages, {
+            id: Date.now(),
+            user: user,
+            message: messageInput,
+        }]);
+        // setMessages([...messages, {
+        //     id: Date.now(),
+        //     user: user,
+        //     message: messageInput,
+        // }])
+        setMessageInput('');
     }
 
 
-    async function onReceive(message) {
-        setMessages([...messages, message]);
+    function onReceive(message) {
+        // const newMessages = [...messages, {...message}]
+        // const messageCpy = JSON.parse(JSON.stringify(message))
+        // setMessages([...messages, {
+        //     id: message.id,
+        //     user: message.user,
+        //     message: message.message,
+        // }])
+        setMessages(message)
+        // console.log(message, messages);
     }
 
 
@@ -64,7 +86,7 @@ function Chat() {
                 <div className='Chat'>
                     <div className='container'>
                         {
-                            messages.map((message, index) => <ChatCard key={index}  message={message}/>)
+                            messages.map((message, index) => <ChatCard key={message.id}  message={message}/>)
                         }
                         
                     </div>
