@@ -1,4 +1,5 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
+import './MapPage.css'
 import Map, {NavigationControl, GeolocateControl} from 'react-map-gl/maplibre';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -11,6 +12,7 @@ import getStarlinksNewPositions from "../helpers/getNewStarlinksPositions";
 import StarlinksMapLayer from '../components/StarlinksMapLayer';
 import StarlinksMapLayer3D from '../components/StarlinksMapLayer3D';
 import Chat from "../components/Chat";
+import Scene3D from '../components/Scene3D';
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.withCredentials = true;
@@ -68,20 +70,21 @@ function MapPage() {
     if(geoControlRef.current) geoControlRef.current.trigger();
     console.log(geoControlRef.current)
     return () => clearInterval(updateTimeout);
-  }, [dataFetched, geoControlRef.current])
+  }, [dataFetched])
 
 
   return (
     <>
     <Chat/>
-    { scene3D ? ""
+    <button className="switchView"  onClick={() => setScene3D(!scene3D)}>{scene3D ? '3D' : '2D'}</button>
+    { scene3D ? <Scene3D starlinks={starlinks}/>
     :
       <Map
       antialias
       initialViewState={{
         longitude: 0,
         latitude: 0,
-        zoom: 4,
+        zoom: 2,
       }}
       mapStyle='/dark_custom.json'
       ref={mapRef}
