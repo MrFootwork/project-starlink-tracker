@@ -14,6 +14,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .chatButton svg {
@@ -35,6 +36,26 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+}
+
+.Chat .modifying {
+    width: 100%;
+    color: inherit;
+    background-color: white;
+    text-align: start;
+    border-bottom: 1px solid rgb(23, 23, 23);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.Chat .modifying svg {
+    height: 15px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 0.5px solid black;
+    cursor: pointer;
 }
 
 .Chat .input {
@@ -62,6 +83,7 @@
     border:none;
     border-radius: 0;
     background-color: white;
+    cursor: pointer;
 }
 
 .Chat .input button svg {

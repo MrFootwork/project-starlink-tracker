@@ -18,11 +18,17 @@ function Chat() {
     const [hidden, setHidden] = useState(true)
     const [messageInput, setMessageInput] = useState('')
     const [messages, setMessages] = useState([])
+    const [modifying, setModifying] = useState(null);
     const [socket, setSocket] = useState(null);
 
     if(!socket){
         setSocket(io(WEBSOCKET_URL));
         
+    }
+
+    function modifyMessage(message){
+        setModifying(message);
+        setMessageInput(message.message);
     }
 
     async function getMessages() {
@@ -37,41 +43,33 @@ function Chat() {
 
     useEffect(() => {
         getMessages();
-        socket.io.on('chatMessage', (message) => {
+        socket.io.on('receiveMessage', (message) => {
             onReceive(message);
         })
     }, [socket])
 
     function handleAddMessage(event){
         event.preventDefault();
-        
-        // await axios.get('http://localhost:3000/health', {withCredentials: true});
-        // console.log(socket);
-        // console.log(user);
+
+        if(modifying){
+            // TODO : make a request to update the message;
+            setMessageInput('');
+            setModifying(null);
+            return
+        }
 
         // Updating the state on the io receiving funtion doesn't seems to work, maybe try to receive the whole messages list from the server
-        socket.io.emit('chatMessage', [...messages, {
+        socket.io.emit('sendMessage', [...messages, {
             id: Date.now(),
             user: user,
             message: messageInput,
         }]);
-        // setMessages([...messages, {
-        //     id: Date.now(),
-        //     user: user,
-        //     message: messageInput,
-        // }])
         setMessageInput('');
     }
 
 
     function onReceive(message) {
-        // const newMessages = [...messages, {...message}]
-        // const messageCpy = JSON.parse(JSON.stringify(message))
-        // setMessages([...messages, {
-        //     id: message.id,
-        //     user: message.user,
-        //     message: message.message,
-        // }])
+        console.log(message)
         setMessages(message)
         // console.log(message, messages);
     }
@@ -86,10 +84,11 @@ function Chat() {
                 <div className='Chat'>
                     <div className='container'>
                         {
-                            messages.map((message, index) => <ChatCard key={message.id}  message={message}/>)
+                            messages.map((message, index) => <ChatCard key={message.id}  message={message} modifyMessage={modifyMessage}/>)
                         }
                         
                     </div>
+                    {modifying && <div className="modifying"><svg xmlns="http://www.w3.org/2000/svg" onClick={() => {setModifying(null); setMessageInput("")}} viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>Modifying message...</div>}
                     <form className='input' onSubmit={handleAddMessage}>
                         <input type="text" name="message" id="message" placeholder='Chat with others !' value={messageInput} onChange={(e) => setMessageInput(e.target.value)}/>
                         <button>

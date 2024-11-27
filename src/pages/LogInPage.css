@@ -72,4 +72,5 @@
     height: 50px;
     border: white 1px solid;
     font-size: 1.25rem;
+    cursor: pointer;
 }

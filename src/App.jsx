@@ -20,9 +20,9 @@ function App() {
 
   async function getCurrentUserInfo(){
     try {
-      const {data} = await axios.get(BASE_URL+'/getUser');
+      const {data} = await axios.get(BASE_URL+'/user');
       if(data){
-        setUser(data.resUser);
+        setUser(data.data);
       } else {
         navigate('/');
       }
