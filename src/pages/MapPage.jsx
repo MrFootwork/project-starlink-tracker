@@ -35,7 +35,7 @@ function MapPage() {
       starlink.satrec = twoline2satrec(starlink.spaceTrack.TLE_LINE1, starlink.spaceTrack.TLE_LINE2);
       return starlink;
     });
-    console.log(activeStarlinks);
+    // console.log(activeStarlinks);
     setStarlinks(activeStarlinks);
     setDataFetched(true);
   }
