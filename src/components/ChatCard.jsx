@@ -6,12 +6,13 @@ import axios from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-function ChatCard({ message, modifyMessage }) {
+function ChatCard({ message, modifyMessage, socket }) {
 	const { user } = useContext(UserContext);
 
 	async function handleDelete() {
 		console.log('deleted message with id : ', message.id);
-		await axios.delete(`${BASE_URL}/message/${message.id}`);
+		await axios.delete(`${BASE_URL}/messages/${message.id}`);
+		socket.emit('useChangeMessage', message)
 	}
 
 	function handleUpdate() {

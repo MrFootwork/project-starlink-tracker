@@ -55,11 +55,7 @@ function Chat() {
 		});
 
 		socket.on('changeMessage', message => {
-			console.log('changed message: ', message);
-			const newMessages = messages.map(msg =>
-				msg.id === message.id ? message : msg
-			);
-			setMessages(newMessages);
+			getInitialMessages();
 		});
 
 		return () => {
@@ -70,10 +66,11 @@ function Chat() {
 
 	async function updateMessage(message, newValue) {
 		try {
-			const { data } = axios.put(`${BASE_URL}/message/${modifying.id}`, {
+			const response = await axios.put(`${BASE_URL}/messages/${modifying.id}`, {
 				...message,
 				message: newValue,
 			});
+			if(response.status === 200) socket.emit('useChangeMessage', {...message, message: newValue});
 		} catch (e) {
 			console.log('ERROR: ', e);
 		}
@@ -128,6 +125,7 @@ function Chat() {
 								key={message.id}
 								message={message}
 								modifyMessage={modifyMessage}
+								socket={socket}
 							/>
 						))}
 					</div>
