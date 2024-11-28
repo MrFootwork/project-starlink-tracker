@@ -56,7 +56,7 @@ function Chat() {
 
 		socket.on('changedMessage', message => {
 			console.log('changed message: ', message);
-			const newMessages = messages.filter(msg => msg.id === message.id ? message : msg);
+			const newMessages = messages.map(msg => msg.id === message.id ? message : msg);
 			setMessages(newMessages);
 		})
 
