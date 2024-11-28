@@ -54,27 +54,28 @@ function Chat() {
 			setMessages(prevMessages => [...prevMessages, message]);
 		});
 
-		socket.on('changedMessage', message => {
+		socket.on('changeMessage', message => {
 			console.log('changed message: ', message);
-			const newMessages = messages.map(msg => msg.id === message.id ? message : msg);
+			const newMessages = messages.map(msg =>
+				msg.id === message.id ? message : msg
+			);
 			setMessages(newMessages);
-		})
+		});
 
 		return () => {
 			socket.off('chatMessage');
-			socket.off('changedMessage');
-		}
+			socket.off('changeMessage');
+		};
 	}, [socket]);
 
-
-	async function updateMessage(message, newValue){
+	async function updateMessage(message, newValue) {
 		try {
-			const {data} = axios.put(BASE_URL + '/messages',{
+			const { data } = axios.put(`${BASE_URL}/message/${modifying.id}`, {
 				...message,
 				message: newValue,
-			})
+			});
 		} catch (e) {
-			console.log('ERROR: ', e)
+			console.log('ERROR: ', e);
 		}
 	}
 
@@ -83,7 +84,7 @@ function Chat() {
 
 		if (modifying) {
 			// TODO : make a request to update the message;
-			updateMessage({...modifying}, messageInput)
+			updateMessage({ ...modifying }, messageInput);
 			setMessageInput('');
 			setModifying(null);
 			return;
