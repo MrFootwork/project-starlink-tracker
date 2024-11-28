@@ -9,12 +9,12 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function ChatCard({ message, modifyMessage }) {
 	const { user } = useContext(UserContext);
 
-	async function handleDelete(e) {
+	async function handleDelete() {
 		console.log('deleted message with id : ', message.id);
 		await axios.delete(`${BASE_URL}/message/${message.id}`);
 	}
 
-	function handleUpdate(e) {
+	function handleUpdate() {
 		console.log('updated message with id : ', message.id);
 		modifyMessage(message);
 	}
@@ -24,7 +24,7 @@ function ChatCard({ message, modifyMessage }) {
 			<img src={message.user?.image ? message.user.image : ''} alt='' />
 			<div className='informations'>
 				<h3>{message.user.username}</h3>
-				<p>{message.message}</p>
+				<p>{message.deleted ? <i style={{textDecoration: 'line-through'}}>'Message deleted'</i> : message.message}</p>
 			</div>
 			{user.username === message.user.username && (
 				<>

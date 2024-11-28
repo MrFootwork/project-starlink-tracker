@@ -38,9 +38,23 @@
     width: 80%;
     height: 40px;
     min-height: 5%;
+    border-radius: 5px;
+}
+
+
+.LogInPage input:user-invalid {
+    outline: 3px solid hsl(203, 30%, 26%);
+    outline-width: 1px;
+    outline-color: red;
+}
+
+.LogInPage input:user-valid {
+    outline: 3px solid hsl(203, 30%, 26%);
+    outline-color: green;
 }
 
 .LogInPage input[type=submit] {
+    outline: none;
     margin-top: 20px;
 }
 
@@ -70,6 +84,24 @@
     color: inherit;
     width: 50%;
     height: 50px;
+    border: white 1px solid;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+
+.LogInPage input[type=file] {
+    width: 80%;
+    text-align: start;
+    outline: none;
+}
+
+.LogInPage input[type=file]::file-selector-button {
+    border: none;
+    background-color: inherit;
+    color: inherit;
+    width: 50%;
+    height: 30px;
     border: white 1px solid;
     font-size: 1.25rem;
     cursor: pointer;
