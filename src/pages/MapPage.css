@@ -1,14 +1,28 @@
-
 .switchView {
-    position: absolute;
-    z-index: 10;
-    width: 50px;
-    aspect-ratio: 1;
-    top: 20px;
-    left: 90px;
-    border: 1px solid rgb(23, 23, 23);
-    border-radius: 50%;
-    background-color: white;
-    color: black;
-    cursor: pointer;
+	z-index: 10;
+	width: 50px;
+	aspect-ratio: 1;
+	top: 20px;
+	left: 90px;
+	border: 1px solid rgb(23, 23, 23);
+	border-radius: 50%;
+	background-color: white;
+	color: black;
+	cursor: pointer;
+}
+
+.button-logout {
+	z-index: 10;
+	width: 50px;
+	aspect-ratio: 1/1;
+	border-radius: 50%;
+	top: 20px;
+	left: 20px;
+	border: 1px solid rgb(23, 23, 23);
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
 }

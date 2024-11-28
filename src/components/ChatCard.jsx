@@ -2,12 +2,16 @@ import './ChatCard.css';
 
 import { UserContext } from '../contexts/UserWrapper';
 import { useContext } from 'react';
+import axios from 'axios';
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function ChatCard({ message, modifyMessage }) {
 	const { user } = useContext(UserContext);
 
-	function handleDelete(e) {
+	async function handleDelete(e) {
 		console.log('deleted message with id : ', message.id);
+		await axios.delete(`${BASE_URL}/message/${message.id}`);
 	}
 
 	function handleUpdate(e) {

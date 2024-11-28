@@ -1,12 +1,15 @@
 import 'maplibre-gl/dist/maplibre-gl.css';
-import './MapPage.css'
-import Map, {NavigationControl, GeolocateControl} from 'react-map-gl/maplibre';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useRef, useCallback } from "react";
+import './MapPage.css';
+import Map, {
+	NavigationControl,
+	GeolocateControl,
+} from 'react-map-gl/maplibre';
+import { useRef, useCallback, useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { twoline2satrec} from 'satellite.js';
 
+import { UserContext } from '../contexts/UserWrapper';
 
 import getStarlinksNewPositions from "../helpers/getNewStarlinksPositions";
 import StarlinksMapLayer from '../components/StarlinksMapLayer';
@@ -27,7 +30,12 @@ function MapPage() {
   const mapRef = useRef();
   const geoControlRef = useRef();
 
-  const API = import.meta.env.VITE_STARLINK_API || 'https://api.spacexdata.com/v4/starlink'
+  const { user, setUser } = useContext(UserContext);
+	const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+	const navigate = useNavigate();
+
+	const API =
+import.meta.env.VITE_STARLINK_API || 'https://api.spacexdata.com/v4/starlink'
 
   async function getFlyingStarlinks() {
     const {data} = await axios.get(`${API}`)
@@ -70,13 +78,25 @@ function MapPage() {
     if(geoControlRef.current) geoControlRef.current.trigger();
     console.log(geoControlRef.current)
     return () => clearInterval(updateTimeout);
-  }, [dataFetched])
+	}, [dataFetched]);
 
+	async function logout() {
+		await axios.post(`${BASE_URL}/logout`);
+		// setTimeout(() => {
+		// 	console.log(user);
+		setUser(null);
+		navigate('/login');
+		// }, 2000);
+	}
 
   return (
     <>
     <Chat/>
-    <button className="switchView"  onClick={() => setScene3D(!scene3D)}>{scene3D ? '3D' : '2D'}</button>
+    <button className="switchView"  onClick={() => setScene3D(!scene3D)}>{scene3D ? '3D' : '2D'}
+			</button>
+			<button className='button-logout' onClick={logout}>
+				Logout
+</button>
     { scene3D ? <Scene3D starlinks={starlinks}/>
     :
       <Map

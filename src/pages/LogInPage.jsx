@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LogInPage.css'
 import axios from 'axios';
@@ -13,9 +13,11 @@ function LogInPage() {
 
     const {user, setUser} = useContext(UserContext);
 
-    if(user){
-        navigate('/sky');
-    }
+    useEffect(() => {
+        if (user) {
+            navigate('/sky');
+        }
+    }, [user]);
 
     const [authForm, setAuthForm] = useState('login');
     const [username, setUsername] = useState('');
